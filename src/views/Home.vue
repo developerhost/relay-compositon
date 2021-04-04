@@ -6,10 +6,18 @@
       label="Regular"
       v-model="newTitleName"
     ></v-text-field>
+  <div class="postBtn">
+    <router-link
+      :to="'/about/' + newTitleName"
+    >
 
     <v-btn @click="addTitle()">
-      追加
+      タイトルを投稿
     </v-btn>
+    </router-link>
+
+  </div>
+
 
     <ul>
       <!-- key=accountsのIDが入る(dmNzy2QX92wE8fR4t5WG) -->

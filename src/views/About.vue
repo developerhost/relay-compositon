@@ -33,13 +33,15 @@ export default {
   data: () => ({
     db: null,
     postsRef: null,
+    postsWhere: null,
     newPost: '',
     posts: {}
   }),
   created(){
     this.db = firebase.firestore()
     this.postsRef = this.db.collection('posts')
-    this.postsRef.onSnapshot(querySnapshot => {
+    this.postsWhere = this.postsRef.where("word", "==", this.$route.params.word)
+    this.postsWhere.onSnapshot(querySnapshot => {
       const obj = {}
       querySnapshot.forEach(doc => {
         obj[doc.id] = doc.data()
@@ -53,8 +55,11 @@ export default {
         alert("nothing");
       }else{
         this.postsRef.add({
-          sentence: this.newPost
+          sentence: this.newPost,
+          word: this.$route.params.word
         })
+        console.log(this.$route.params.word);
+        
       }
     }
   }
