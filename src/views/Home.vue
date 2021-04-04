@@ -47,7 +47,8 @@ export default {
     db: null,
     titlesRef: null,
     newTitleName: '',
-    titles: {}
+    titles: {},
+    isComplete: false
   }),
   created(){
     this.db = firebase.firestore()
