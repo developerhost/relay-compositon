@@ -3,8 +3,12 @@
     <h1>タイトル</h1>
 
     <v-text-field
-      label="Regular"
+      label="タイトル"
       v-model="newTitleName"
+    ></v-text-field>
+    <v-text-field
+      label="名前"
+      v-model="newAuthor"
     ></v-text-field>
   <div class="postBtn">
     <router-link
@@ -28,6 +32,8 @@
         {{ key }}
         {{ title }}
         {{ title.word }}
+        {{ title.name }}
+        {{ title.postNumber }}
         <!-- {{ this.postNumber }} -->
         <!-- {{ this.$route.params.size }} -->
         </router-link>
@@ -42,6 +48,7 @@ import firebase from 'firebase'
 
 export default {
   name: 'Home',
+  props: ['size'],
   components: {
     
   },
@@ -51,7 +58,8 @@ export default {
     newTitleName: '',
     titles: {},
     isComplete: false,
-    postNumber: ''
+    postNumber: 0,
+    newAuthor: ''
   }),
   created(){
     this.db = firebase.firestore()
@@ -69,10 +77,27 @@ export default {
       }
       console.log(this.$route.params.size)
     })
-    this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
+
+    //投稿数を表示
+    const postList = this.db.collection('posts').where("word", "==", this.$route.params.word);
+    postList.get().then(snap => {
     this.postNumber = snap.postNumber
     console.log(this.postNumber)
     });
+
+    //投稿数を追加する処理
+    postList.get().then((res) => {
+      res.forEach((doc) => {
+        postList.doc(doc.id).update({
+          postNumber: firebase.firestore.FieldValue.increment(1),
+        })
+      })
+    })
+    console.log(this.postNumber);
+
+    //parent
+    let firebase_node = firebase.database().ref('/about');
+    firebase_node.once('value', titles => console.log('Count: ' + titles.numChildren()));
   },
   methods: {
     addTitle(){
@@ -82,7 +107,8 @@ export default {
         this.titlesRef.add({
           word: this.newTitleName,
           isComplete: false,
-          postNumber: ''
+          postNumber: 0,
+          name: this.newAuthor
         })
       }
     }

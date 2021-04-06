@@ -1,10 +1,22 @@
 <template>
   <div class="about">
+    <h1>{{ this.$route.params.name }}</h1>
     <h1>{{ this.$route.params.word }}</h1>
 
+    <div id="canvas">
+    <Canvas
+      :canvas-text="this.$route.params.word"
+      @image-created="createdImageUri=$event"
+    />
+    </div>
+
     <v-text-field
-      label="Regular"
+      label="文章を入力"
       v-model="newPost"
+    ></v-text-field>
+    <v-text-field
+      label="名前を入力"
+      v-model="newPostName"
     ></v-text-field>
 
     <v-btn @click="addPost()">
@@ -35,10 +47,15 @@
 
 <script>
 import firebase from 'firebase'
+import Canvas from "../components/Canvas.vue"
 
 
 export default {
   name: 'About',
+  props: ['postNumber'],
+  components: {
+    Canvas
+  },
   data: () => ({
     db: null,
     postsRef: null,
@@ -46,7 +63,10 @@ export default {
     postsDesc: null,
     newPost: '',
     posts: {},
-    size: ''
+    size: '',
+    newPostName: '',
+    isPush: false,
+    canvasText: "",
   }),
   created(){
     this.db = firebase.firestore()
@@ -64,19 +84,10 @@ export default {
     // 投稿数を表示
     this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
     this.size = snap.size // will return the collection size
+
+    //
+    this.incrementPostNumber(this.$route.params.word)
 });
-
-//titlesにpostの数を追加
-this.titlesRef = this.db.collection('titles')
-this.titlesWhere = this.titlesRef.where("word", "==", this.$route.params.word)
-    this.titlesRef.onSnapshot(querySnapshot => { //onSnapshot=イベントリスナー何か変化があった時に呼び出される
-      const obj = {}
-      querySnapshot.forEach(doc => {
-        obj[doc.id] = doc.data()
-      })
-      this.titles = obj
-    })
-
 
   },
   methods: {
@@ -87,13 +98,31 @@ this.titlesWhere = this.titlesRef.where("word", "==", this.$route.params.word)
         this.postsRef.add({
           sentence: this.newPost,
           word: this.$route.params.word,
-          createdAt: new Date()
+          createdAt: new Date(),
+          name: this.newPostName,
         })
-        this.titlesWhere.add({
-          size: this.size
-        })
+      this.newPost = '';
+      this.newPostName = '';
+      this.isPush = true;
       }
-    }
+    },
+    //postをincrement
+      incrementPostNumber: (word) => {
+      const db = firebase.firestore()
+      const postList = db.collection('posts').where("word", "==", word);
+        postList.get()
+        .then((res) => {
+          res.forEach((doc) => {
+            console.log(doc.data());
+            console.log(1233333, doc.id);
+            postList.doc(doc.id).update({
+              postNumber: firebase.firestore.FieldValue.increment(1),
+            });
+          });
+        }).catch((error) =>{
+          console.error("Error writing document: ", error);
+        });
+    },
   }
 }
 </script>
