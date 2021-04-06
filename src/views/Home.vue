@@ -86,13 +86,13 @@ export default {
     });
 
     //投稿数を追加する処理
-    postList.get().then((res) => {
-      res.forEach((doc) => {
-        postList.doc(doc.id).update({
-          postNumber: firebase.firestore.FieldValue.increment(1),
-        })
-      })
-    })
+    // postList.get().then((res) => {
+    //   res.forEach((doc) => {
+    //     postList.doc(doc.id).update({
+    //       postNumber: firebase.firestore.FieldValue.increment(1),
+    //     })
+    //   })
+    // })
     console.log(this.postNumber);
 
     //parent

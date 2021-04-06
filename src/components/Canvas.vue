@@ -41,59 +41,37 @@ export default {
       this.drawImage(this.canvas);
     },
   methods: {
-    drawImage: async function (canvas) {
-      const image = await this.asyncLoadImage();
-      const self = this;
-      if (image.width > self.max_width) {
-        image.width = self.max_width;
-      }
-      if (image.height > self.max_height) {
-        image.height = self.max_height;
-      }
+    drawImage: function (canvas) {
+      let image = new Image;
       const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, 250, 250);
+      let imagePath = "../assets/title.jpg";
+      image.src = imagePath;
 
       // キャンバスに画像を描画（開始位置0,0）
-      ctx.drawImage(image, 0, 0, image.width, image.height);
-      console.log(image.width);
-      console.log(image.height);
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+        console.log("image",image);
+        console.log("image-width",image.width);
+        console.log("image-heigth",image.height);
+      }
+      
+      console.log("image",image);
     },
 
-    drawText: function(canvas, text) {
-      const ctx = canvas.getContext("2d");
-      //文字の配置を指定
-      ctx.textBaseline = "center";
-      ctx.textAlign = "center";
+    // reDraw: function () {
+    //   this.context.clearRect(0, 0, 250, 250);
+    //   this.drawImage(this.canvas).then(() => {
+    //     this.drawText(this.canvas, this.$route.params.word);
+    //     console.log("word" ,this.$route.params.word);
+    //   })
+    // },
 
-      //座標を指定して文字を描く（画像の中心に）
-      let x = canvas.width / 2;
-      let y = canvas.height / 2;
-
-      ctx.fillText(text, x, y);
-      console.log("text",text);
-    },
-
-    asyncLoadImage: async function () {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = (e) => reject(e);
-      });
-    },
-
-    reDraw: function () {
-      this.context.clearRect(0, 0, 250, 250);
-      this.drawImage(this.canvas).then(() => {
-        this.drawText(this.canvas, this.$route.params.word);
-        const imageUri = this.canvas.toDataURL();
-        this.$emit("image-created", imageUri);
-      })
-    },
-
-    watch: {
-      canvasText: function () {
-        this.reDraw();
-      },
-    }
+    // watch: {
+    //   canvasText: function () {
+    //     this.reDraw();
+    //   },
+    // }
   },
 }
 </script>
