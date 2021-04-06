@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>タイトル</h1>
+    <h1>完成品</h1>
 
     <v-text-field
       label="Regular"
@@ -28,8 +28,6 @@
         {{ key }}
         {{ title }}
         {{ title.word }}
-        <!-- {{ this.postNumber }} -->
-        <!-- {{ this.$route.params.size }} -->
         </router-link>
       </div>
     </ul>
@@ -41,7 +39,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'Home',
+  name: 'Complete',
   components: {
     
   },
@@ -50,39 +48,26 @@ export default {
     titlesRef: null,
     newTitleName: '',
     titles: {},
-    isComplete: false,
-    postNumber: ''
+    isComplete: false
   }),
   created(){
     this.db = firebase.firestore()
     this.titlesRef = this.db.collection('titles')
-    this.titlesRef.onSnapshot(querySnapshot => { //onSnapshot=イベントリスナー何か変化があった時に呼び出される
+    this.titlesRef.onSnapshot(querySnapshot => {
       const obj = {}
       querySnapshot.forEach(doc => {
         obj[doc.id] = doc.data()
       })
       this.titles = obj
-
-      //titleとひもづくpostが10投稿でisCompleteをtrueにしたい
-      if(this.$route.params.size >= 10){
-        this.titles.isComplete = !this.titles.isComplete
-      }
-      console.log(this.$route.params.size)
     })
-    this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
-    this.postNumber = snap.postNumber
-    console.log(this.postNumber)
-    });
   },
   methods: {
     addTitle(){
       if(this.newTitleName === ''){
-        alert("入力してください");
+        alert("nothing");
       }else{
         this.titlesRef.add({
-          word: this.newTitleName,
-          isComplete: false,
-          postNumber: ''
+          word: this.newTitleName
         })
       }
     }

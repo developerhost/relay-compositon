@@ -51,6 +51,12 @@
     >
       ABOUT
     </router-link>
+
+    <router-link
+      to="/complete"
+    >
+      完成品
+    </router-link>
       </p>
 
       <h1>一覧</h1>

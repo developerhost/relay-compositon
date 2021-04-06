@@ -65,6 +65,19 @@ export default {
     this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
     this.size = snap.size // will return the collection size
 });
+
+//titlesにpostの数を追加
+this.titlesRef = this.db.collection('titles')
+this.titlesWhere = this.titlesRef.where("word", "==", this.$route.params.word)
+    this.titlesRef.onSnapshot(querySnapshot => { //onSnapshot=イベントリスナー何か変化があった時に呼び出される
+      const obj = {}
+      querySnapshot.forEach(doc => {
+        obj[doc.id] = doc.data()
+      })
+      this.titles = obj
+    })
+
+
   },
   methods: {
     addPost(){
@@ -75,6 +88,9 @@ export default {
           sentence: this.newPost,
           word: this.$route.params.word,
           createdAt: new Date()
+        })
+        this.titlesWhere.add({
+          size: this.size
         })
       }
     }
