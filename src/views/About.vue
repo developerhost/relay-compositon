@@ -17,7 +17,7 @@
       v-model="newPostName"
     ></v-text-field>
 
-    <v-btn @click="addPost(); incrementPostNumber();">
+    <v-btn @click="addPost(); incrementPostNumber(this.$route.params.word);">
       投稿
     </v-btn>
 
@@ -83,10 +83,11 @@ export default {
     // 投稿数を表示
     this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
     this.size = snap.size // will return the collection size
-
-    console.log(this);
     //
     // this.incrementPostNumber(this.$route.params.word)
+    // this.sizePostNumber(this.$route.params.word)
+    console.log("size",this.size);
+    
 });
 
   },
@@ -109,7 +110,8 @@ export default {
     // postをincrement
       incrementPostNumber: (word) => {
       const db = firebase.firestore()
-      const titleList = db.collection('titles').where("word", "==", word);
+      const titleList = db.collection('titles');
+      titleList.where("word", "==", word);
         titleList.get()
         .then((res) => {
           res.forEach((doc) => {
@@ -117,6 +119,24 @@ export default {
             console.log(1233333, doc.id);
             titleList.doc(doc.id).update({
               postNumber: firebase.firestore.FieldValue.increment(1),
+            });
+          });
+        }).catch((error) =>{
+          console.error("Error writing document: ", error);
+        });
+    },
+    // this.sizeをpostNumberに
+      sizePostNumber: (word) => {
+      const db = firebase.firestore()
+      const titleList = db.collection('titles');
+      titleList.where("word", "==", word);
+        titleList.get()
+        .then((res) => {
+          res.forEach((doc) => {
+            console.log(doc.data());
+            console.log(1233333, doc.id);
+            titleList.doc(doc.id).update({
+              postNumber: this.size,
             });
           });
         }).catch((error) =>{

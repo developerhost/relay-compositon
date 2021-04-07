@@ -3,19 +3,28 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify';
 import firebase from 'firebase'
+import dotenv from 'dotenv'
 
 Vue.config.productionTip = false
+dotenv.config()
+
+
 
 // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+console.log("api", process.env.storageBucket);
+console.log("env",process.env);
+
+
   var firebaseConfig = {
-    apiKey: "AIzaSyBQqCI38ACW5ySI1fkxwoIzvp3dPAYUZbE",
-    authDomain: "relay-composition.firebaseapp.com",
-    projectId: "relay-composition",
+    apiKey: process.env.VUE_APP_API_KEY,
+    authDomain: process.env.VUE_APP_AUTHDOMAIN,
+    projectId: process.env.VUE_APP_PROJECTID,
     storageBucket: "relay-composition.appspot.com",
-    messagingSenderId: "436458558466",
-    appId: "1:436458558466:web:11f11ef54583b1e4c1c31b",
-    measurementId: "G-P38S52T5CG"
+    messagingSenderId: process.env.VUE_APP_MESSAGINGSNDERID,
+    appId: process.env.VUE_APP_APPID,
+    measurementId: process.env.VUE_APP_MEASUREMWNTID
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);

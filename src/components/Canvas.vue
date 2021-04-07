@@ -8,7 +8,7 @@
         class="canvas"
       ></canvas>
     </div>
-    <img src="@/assets/img/title.jpg">
+    <img src="../assets/img/title.jpg">
   </div>
 </template>
 
@@ -58,7 +58,7 @@ export default {
         ctx.drawImage(image, 0, 0);
         console.log("image-onload",image);
       };
-      image.src = "@/assets/img/title.jpg"
+      image.src = "../assets/img/title.jpg"
         console.log("image-final",image);
         console.log("image-width",image.width);
         console.log("image-heigth",image.height);
