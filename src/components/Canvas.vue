@@ -3,17 +3,12 @@
     <div id="canvas-area">
       <canvas
         id="myCanvas"
-        width="250px"
-        height="250px"
+        width="600px"
+        height="600px"
         class="canvas"
       ></canvas>
     </div>
     <img src="@/assets/img/title.jpg">
-    <v-btn
-      @click="imageDraw(this.canvas)"
-    >
-      表示
-    </v-btn>
   </div>
 </template>
 
@@ -45,22 +40,25 @@ export default {
       this.imageDraw(this.canvas);
     },
   methods: {
-    imageDraw: function (canvas) {
+    // eslint-disable-next-line no-unused-vars
+    imageDraw: function () {
       let image = new Image();
-      image.src = "@/assets/img/title.jpg"
-      const ctx = canvas.getContext("2d");
       console.log("image-first",image);
 
       // キャンバスに画像を描画（開始位置0,0）
-      image.onload = function() {
+      // eslint-disable-next-line no-unused-vars
+      image.onload = function(e) {
+        const canvas = document.querySelector("#myCanvas");
+        //(4)canvasグラフィックのサイズを設定する. ここでは画像のサイズに合わせている.
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        //(5)canvasグラフィックを描くためのコンテキストオブジェクトを取得する.
+        const ctx = canvas.getContext("2d");
+        //(6)canvas要素にimageオブジェクトの内容を転写する.
         ctx.drawImage(image, 0, 0);
         console.log("image-onload",image);
       };
-      image.onerror = function(e) {
-        ctx.drawImage(image, 0, 0);
-        console.log("error", e);
-        
-      }
+      image.src = "@/assets/img/title.jpg"
         console.log("image-final",image);
         console.log("image-width",image.width);
         console.log("image-heigth",image.height);

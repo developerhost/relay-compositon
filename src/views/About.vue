@@ -1,7 +1,7 @@
 <template>
   <div class="about">
-    <h1>{{ this.$route.params.name }}</h1>
     <h1>{{ this.$route.params.word }}</h1>
+    <h1>{{ this.$route.query.id }}</h1>
 
     <div id="canvas">
     <Canvas

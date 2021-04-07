@@ -12,7 +12,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/about/:word',
+    path: '/about/:word/',
     name: 'About',
     props: true,
     // route level code-splitting

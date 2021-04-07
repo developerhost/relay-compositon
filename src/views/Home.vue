@@ -11,8 +11,11 @@
       v-model="newAuthor"
     ></v-text-field>
   <div class="postBtn">
-    <router-link
+    <!-- <router-link
       :to="'/about/' + newTitleName"
+    > -->
+    <router-link
+      :to="{name: 'About', params: {word: newTitleName}, query: {id: newAuthor}}"
     >
 
     <v-btn @click="addTitle()">
