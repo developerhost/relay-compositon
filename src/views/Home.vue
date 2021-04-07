@@ -71,6 +71,8 @@ export default {
       })
       this.titles = obj
 
+      console.log("titles",this.titles);
+      
       //titleとひもづくpostが10投稿でisCompleteをtrueにしたい
       if(this.$route.params.size >= 10){
         this.titles.isComplete = !this.titles.isComplete
@@ -96,8 +98,8 @@ export default {
     console.log(this.postNumber);
 
     //parent
-    let firebase_node = firebase.database().ref('/about');
-    firebase_node.once('value', titles => console.log('Count: ' + titles.numChildren()));
+    // let firebase_node = firebase.database().ref('/about');
+    // firebase_node.once('value', titles => console.log('Count: ' + titles.numChildren()));
   },
   methods: {
     addTitle(){

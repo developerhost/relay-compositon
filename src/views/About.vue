@@ -48,6 +48,7 @@ import firebase from 'firebase'
 import Canvas from "../components/Canvas.vue"
 
 
+
 export default {
   name: 'About',
   props: ['postNumber'],
@@ -83,6 +84,7 @@ export default {
     this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
     this.size = snap.size // will return the collection size
 
+    console.log(this);
     //
     // this.incrementPostNumber(this.$route.params.word)
 });
@@ -104,23 +106,23 @@ export default {
       this.isPush = true;
       }
     },
-    //postをincrement
-    //   incrementPostNumber: (word) => {
-    //   const db = firebase.firestore()
-    //   const postList = db.collection('posts').where("word", "==", word);
-    //     postList.get()
-    //     .then((res) => {
-    //       res.forEach((doc) => {
-    //         console.log(doc.data());
-    //         console.log(1233333, doc.id);
-    //         postList.doc(doc.id).update({
-    //           postNumber: firebase.firestore.FieldValue.increment(1),
-    //         });
-    //       });
-    //     }).catch((error) =>{
-    //       console.error("Error writing document: ", error);
-    //     });
-    // },
+    // postをincrement
+      incrementPostNumber: (word) => {
+      const db = firebase.firestore()
+      const postList = db.collection('posts').where("word", "==", word);
+        postList.get()
+        .then((res) => {
+          res.forEach((doc) => {
+            console.log(doc.data());
+            console.log(1233333, doc.id);
+            postList.doc(doc.id).update({
+              postNumber: firebase.firestore.FieldValue.increment(1),
+            });
+          });
+        }).catch((error) =>{
+          console.error("Error writing document: ", error);
+        });
+    },
   }
 }
 </script>
