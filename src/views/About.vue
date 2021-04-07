@@ -17,7 +17,7 @@
       v-model="newPostName"
     ></v-text-field>
 
-    <v-btn @click="addPost()">
+    <v-btn @click="addPost(); incrementPostNumber();">
       投稿
     </v-btn>
 
@@ -109,13 +109,13 @@ export default {
     // postをincrement
       incrementPostNumber: (word) => {
       const db = firebase.firestore()
-      const postList = db.collection('posts').where("word", "==", word);
-        postList.get()
+      const titleList = db.collection('titles').where("word", "==", word);
+        titleList.get()
         .then((res) => {
           res.forEach((doc) => {
             console.log(doc.data());
             console.log(1233333, doc.id);
-            postList.doc(doc.id).update({
+            titleList.doc(doc.id).update({
               postNumber: firebase.firestore.FieldValue.increment(1),
             });
           });
