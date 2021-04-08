@@ -45,9 +45,10 @@ export default {
       let image = new Image();
       console.log("image-first",image);
 
+
       // キャンバスに画像を描画（開始位置0,0）
       // eslint-disable-next-line no-unused-vars
-      image.onload = function(e) {
+      image.addEventListener("load", function() {
         const canvas = document.querySelector("#myCanvas");
         //(4)canvasグラフィックのサイズを設定する. ここでは画像のサイズに合わせている.
         canvas.width = image.naturalWidth;
@@ -57,8 +58,9 @@ export default {
         //(6)canvas要素にimageオブジェクトの内容を転写する.
         ctx.drawImage(image, 0, 0);
         console.log("image-onload",image);
-      };
-      image.src = "../assets/img/title.jpg"
+      });
+        image.src = "../assets/img/title.jpg"
+        console.log("src",image.src)
         console.log("image-final",image);
         console.log("image-width",image.width);
         console.log("image-heigth",image.height);
