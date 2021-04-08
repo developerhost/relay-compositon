@@ -80,14 +80,12 @@ export default {
       if(this.$route.params.size >= 10){
         this.titles.isComplete = !this.titles.isComplete
       }
-      console.log(this.$route.params.size)
     })
 
     //投稿数を表示
     const postList = this.db.collection('posts').where("word", "==", this.$route.params.word);
     postList.get().then(snap => {
     this.postNumber = snap.postNumber
-    console.log(this.postNumber)
     });
 
     //投稿数を追加する処理

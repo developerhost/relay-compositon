@@ -19,7 +19,9 @@
 </style>
 
 <script>
+import imgSrc from "@/assets/img/title.jpg";
 export default {
+  
   name: "Canvas",
   props: [
     "NewAuthor",
@@ -38,16 +40,13 @@ export default {
       this.canvas = document.querySelector("#myCanvas");
       this.context = this.canvas.getContext("2d");
       this.imageDraw(this.canvas);
+      this.drawText(this.canvas, this.newTitleName, this.NewAuthor)
     },
   methods: {
-    // eslint-disable-next-line no-unused-vars
     imageDraw: function () {
       let image = new Image();
-      console.log("image-first",image);
-
 
       // キャンバスに画像を描画（開始位置0,0）
-      // eslint-disable-next-line no-unused-vars
       image.addEventListener("load", function() {
         const canvas = document.querySelector("#myCanvas");
         //(4)canvasグラフィックのサイズを設定する. ここでは画像のサイズに合わせている.
@@ -57,14 +56,22 @@ export default {
         const ctx = canvas.getContext("2d");
         //(6)canvas要素にimageオブジェクトの内容を転写する.
         ctx.drawImage(image, 0, 0);
-        console.log("image-onload",image);
       });
-        image.src = "../assets/img/title.jpg"
-        console.log("src",image.src)
-        console.log("image-final",image);
-        console.log("image-width",image.width);
-        console.log("image-heigth",image.height);
+        image.src = imgSrc;
     },
+
+    drawText: function (canvas, text) {
+      const ctx = canvas.getContext('2d');
+
+      ctx.textBaseline = "top";
+      ctx.textAlign = "top";
+
+      var x = canvas.width / 2;
+      var y = canvas.height / 2;
+
+      ctx.fillText(text, x, y);
+      console.log(text);
+    }
 
     // reDraw: function () {
     //   this.context.clearRect(0, 0, 250, 250);

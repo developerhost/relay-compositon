@@ -13,9 +13,6 @@ dotenv.config()
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-console.log("api", process.env.storageBucket);
-console.log("env",process.env);
-
 
   var firebaseConfig = {
     apiKey: process.env.VUE_APP_API_KEY,
