@@ -15,7 +15,7 @@
       :to="'/about/' + newTitleName"
     > -->
     <router-link
-      :to="{name: 'About', params: {word: newTitleName}, query: {id: newAuthor}}"
+      :to="{name: 'About', query: {word: newTitleName, id: newAuthor}}"
     >
 
     <v-btn @click="addTitle()">
@@ -30,7 +30,7 @@
       <!-- key=accountsのIDが入る(dmNzy2QX92wE8fR4t5WG) -->
       <div v-for="(title, key) in titles" :key="key">
         <router-link
-        :to="'/about/' + title.word"
+        :to="{name: 'About', query: {word: title.word, id: title.name}}"
         >
         {{ key }}
         {{ title }}

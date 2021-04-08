@@ -1,10 +1,12 @@
 <template>
   <div class="about">
-    <h1>{{ this.$route.params.word }}</h1>
+    <h1>{{ this.$route.query.word }}</h1>
     <h1>{{ this.$route.query.id }}</h1>
 
     <div id="canvas">
     <Canvas
+    :NewAuthor="this.$route.query.id"
+    :newTitleName="this.$route.query.word"
     />
     </div>
 
@@ -17,7 +19,7 @@
       v-model="newPostName"
     ></v-text-field>
 
-    <v-btn @click="addPost(); incrementPostNumber(this.$route.params.word);">
+    <v-btn @click="addPost()">
       投稿
     </v-btn>
 
@@ -70,26 +72,17 @@ export default {
   created(){
     this.db = firebase.firestore()
     this.postsRef = this.db.collection('posts')
-    this.postsWhere = this.postsRef.where("word", "==", this.$route.params.word)
+    this.postsWhere = this.postsRef.where("word", "==", this.$route.query.word)
     this.postsLimit = this.postsWhere.orderBy("createdAt", "asc")
     
     this.postsLimit.onSnapshot(querySnapshot => {
-      const obj = {}
+      const obj = {};
+      this.size = querySnapshot.size
       querySnapshot.forEach(doc => {
         obj[doc.id] = doc.data()
       })
       this.posts = obj
     })
-    // 投稿数を表示
-    this.db.collection('posts').where("word", "==", this.$route.params.word).get().then(snap => {
-    this.size = snap.size // will return the collection size
-    //
-    // this.incrementPostNumber(this.$route.params.word)
-    // this.sizePostNumber(this.$route.params.word)
-    console.log("size",this.size);
-    
-});
-
   },
   methods: {
     addPost(){
@@ -98,21 +91,27 @@ export default {
       }else{
         this.postsRef.add({
           sentence: this.newPost,
-          word: this.$route.params.word,
+          word: this.$route.query.word,
           createdAt: new Date(),
           name: this.newPostName,
+        }).then(() => {
+          this.incrementPostNumber(this.$route.query.word);
         })
       this.newPost = '';
       this.newPostName = '';
       this.isPush = true;
+      console.log("post");
+      this.size += 1;
+
       }
     },
     // postをincrement
       incrementPostNumber: (word) => {
       const db = firebase.firestore()
       const titleList = db.collection('titles');
-      titleList.where("word", "==", word);
-        titleList.get()
+      titleList
+      .where("word", "==", word)
+      .get()
         .then((res) => {
           res.forEach((doc) => {
             console.log(doc.data());
