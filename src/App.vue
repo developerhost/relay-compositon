@@ -14,7 +14,6 @@
       >
         <span class="mr-2 white--text font-weight-bold">シェア</span>
         <v-icon>mdi-open-in-new</v-icon>
-        <v-icon>mdi-account-edit-outline</v-icon>
       </v-btn>
     </v-app-bar>
 

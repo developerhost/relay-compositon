@@ -1,23 +1,50 @@
 <template>
   <div class="home">
-    <h1>完成品</h1>
+    <h1>完結した作品</h1>
   <div class="postBtn">
 
   </div>
 
-
-    <ul>
-      <!-- key=accountsのIDが入る(dmNzy2QX92wE8fR4t5WG) -->
-      <div v-for="(title, key) in titles" :key="key">
-        <router-link
-        :to="{name: 'About', query: {word: title.word, id: title.name}}"
+  <v-container>
+      <v-row dense>
+        <v-col
+          v-for="(title, key) in titles"
+          :key="key"
+          cols="12"
         >
-        {{ key }}
-        {{ title }}
-        {{ title.word }}
-        </router-link>
-      </div>
-    </ul>
+                <router-link
+          :to="{ name: 'About', query: { word: title.word, id: title.name } }"
+          class="text-decoration-none"
+        >
+          <v-card
+          
+          outlined
+          elevation="9"
+          >
+            <v-card-title
+              class="headline"
+            >
+            <span>
+              {{ title.word }}
+            </span>
+            <v-spacer></v-spacer>
+
+            <span 
+            class="subtitle-1"
+            >
+            完成済み</span>
+            
+            </v-card-title>
+
+
+
+            <v-card-subtitle v-text="title.name"></v-card-subtitle>
+          </v-card>
+          </router-link>
+        </v-col>
+      </v-row>
+    </v-container>
+
   </div>
 </template>
 
