@@ -1,17 +1,22 @@
 <template>
   <div class="about">
+    <v-container>
+      <v-row class="text-center my-5" justify="center">
     <div id="canvas">
       <Canvas
         :NewAuthor="this.$route.query.id"
         :newTitleName="this.$route.query.word"
       />
     </div>
+      </v-row>
+    </v-container>
 
     <!-- モーダルで投稿ボタンを作成 -->
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+          
             color="blue lighten-2"
             outlined
             large
@@ -154,7 +159,9 @@ export default {
             name: this.newPostName,
           })
           .then(() => {
-            this.incrementPostNumber(this.$route.query.word);
+            this.incrementPostNumber();
+            console.log("increment");
+            
           });
         this.newPost = "";
         this.newPostName = "";
@@ -164,11 +171,11 @@ export default {
       }
     },
     // postをincrement
-    incrementPostNumber: (word) => {
+    incrementPostNumber: () => {
       const db = firebase.firestore();
       const titleList = db.collection("titles");
       titleList
-        .where("word", "==", word)
+        .where("word", "==", this.$route.query.word)
         .get()
         .then((res) => {
           res.forEach((doc) => {
