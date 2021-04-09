@@ -12,6 +12,7 @@
     </v-container>
 
     <!-- モーダルで投稿ボタンを作成 -->
+    <div v-if="this.size <= 9">
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
@@ -64,6 +65,7 @@
         </v-card>
       </v-dialog>
     </div>
+    </div>
 
     <v-container>
       <v-row class="text-center my-2" justify="center">
@@ -76,10 +78,10 @@
       <v-divider></v-divider>
     </v-container>
 
-    <h1 v-if="this.size <= 9">
-      未完成
-    </h1>
-    <h1 v-else>完成</h1>
+    <h3 v-if="this.size <= 9">
+      未完成だよ
+    </h3>
+    <h3 v-else>完成したよ</h3>
 
     <!-- カードを使って見た目を整える -->
     <v-container>
@@ -105,6 +107,18 @@
         </v-col>
       </v-row>
     </v-container>
+    
+    <div class="text-center">
+      <v-btn 
+        color="blue lighten-2"
+        outlined
+        large
+        class="font-weight-bold my-5"
+        dark
+        @click="tweet()"
+        >ツイートする
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -159,7 +173,7 @@ export default {
             name: this.newPostName,
           })
           .then(() => {
-            this.incrementPostNumber();
+            this.incrementPostNumber(this.$route.query.word);
             console.log("increment");
             
           });
@@ -171,11 +185,11 @@ export default {
       }
     },
     // postをincrement
-    incrementPostNumber: () => {
+    incrementPostNumber: (word) => {
       const db = firebase.firestore();
       const titleList = db.collection("titles");
       titleList
-        .where("word", "==", this.$route.query.word)
+        .where("word", "==", word)
         .get()
         .then((res) => {
           res.forEach((doc) => {
@@ -189,6 +203,15 @@ export default {
         .catch((error) => {
           console.error("Error writing document: ", error);
         });
+    },
+    tweet() {
+      var shareURL =
+        "https://twitter.com/intent/tweet?text=" +
+        "新しい小説を作ろう" +
+        "%20%23TwiStory" +
+        "&url=" +
+        "https://relay-composition.web.app/";
+      location.href = shareURL;
     },
   },
 };

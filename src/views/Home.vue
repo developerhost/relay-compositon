@@ -53,7 +53,15 @@
       <div class="text-center">
         <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="blue lighten-2" outlined large class="font-weight-bold my-5" dark v-bind="attrs" v-on="on">
+            <v-btn
+              color="blue lighten-2"
+              outlined
+              large
+              class="font-weight-bold my-5"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
               新しい小説を作る
             </v-btn>
           </template>
@@ -63,18 +71,29 @@
               タイトルと名前を入力
             </v-card-title>
 
-            <v-text-field label="タイトル" v-model="newTitleName"></v-text-field>
+            <v-text-field
+              label="タイトル"
+              v-model="newTitleName"
+            ></v-text-field>
             <v-text-field label="名前" v-model="newAuthor"></v-text-field>
 
             <v-divider></v-divider>
 
             <v-card-actions>
               <v-spacer></v-spacer>
-                <router-link
+              <router-link
                 class="text-decoration-none"
-                  :to="{ name: 'About', query: { word: newTitleName, id: newAuthor } }"
+                :to="{
+                  name: 'About',
+                  query: { word: newTitleName, id: newAuthor },
+                }"
+              >
+                <v-btn
+                  color="blue"
+                  text
+                  class="font-weight-bold text--darken-2"
+                  @click="addTitle()"
                 >
-                <v-btn color="blue" text class="font-weight-bold text--darken-2" @click="addTitle()">
                   新しい小説を投稿
                 </v-btn>
               </router-link>
@@ -91,41 +110,28 @@
       </v-row>
     </v-container>
 
+    <!-- カードで見た目を整える -->
     <v-container>
       <v-row dense>
-        <v-col
-          v-for="(title, key) in titles"
-          :key="key"
-          cols="12"
-        >
-                <router-link
-          :to="{ name: 'About', query: { word: title.word, id: title.name } }"
-          class="text-decoration-none"
-        >
-          <v-card
-          
-          outlined
-          elevation="9"
+        <v-col v-for="(title, key) in titles" :key="key" cols="12">
+          <router-link
+            :to="{ name: 'About', query: { word: title.word, id: title.name } }"
+            class="text-decoration-none"
           >
-            <v-card-title
-              class="headline"
-            >
-            <span>
-              {{ title.word }}
-            </span>
-            <v-spacer></v-spacer>
+            <v-card outlined elevation="9">
+              <v-card-title class="headline">
+                <span>
+                  {{ title.word }}
+                </span>
+                <v-spacer></v-spacer>
 
-            <span 
-            class="subtitle-1"
-            >
-            あと{{ 10 - title.postNumber }}人！</span>
-            
-            </v-card-title>
+                <span class="subtitle-1">
+                  あと{{ 10 - title.postNumber }}人！</span
+                >
+              </v-card-title>
 
-
-
-            <v-card-subtitle v-text="title.name"></v-card-subtitle>
-          </v-card>
+              <v-card-subtitle v-text="title.name"></v-card-subtitle>
+            </v-card>
           </router-link>
         </v-col>
       </v-row>

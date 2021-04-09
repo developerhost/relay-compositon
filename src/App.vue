@@ -8,9 +8,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+        class="font-weight-bold" text @click="tweet()"
       >
         <span class="mr-2 white--text font-weight-bold">シェア</span>
         <v-icon>mdi-open-in-new</v-icon>
@@ -50,5 +48,16 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    tweet() {
+      var shareURL =
+        "https://twitter.com/intent/tweet?text=" +
+        "新しい小説を作ろう" +
+        "%20%23TwiStory" +
+        "&url=" +
+        "https://relay-composition.web.app/";
+      location.href = shareURL;
+    },
+  }
 };
 </script>
