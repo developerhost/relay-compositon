@@ -1,28 +1,8 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="blue" dark>
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h1>TwiStory</h1>
       </div>
 
       <v-spacer></v-spacer>
@@ -32,50 +12,41 @@
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2 white--text font-weight-bold">シェア</span>
         <v-icon>mdi-open-in-new</v-icon>
+        <v-icon>mdi-account-edit-outline</v-icon>
       </v-btn>
     </v-app-bar>
 
-
     <v-main>
-      <p>
-    <router-link
-    to="/"
-    >
-      HOME
-    </router-link>
-
-    <router-link
-      to="/about"
-    >
-      ABOUT
-    </router-link>
-
-    <router-link
-      to="/complete"
-    >
-      完成品
-    </router-link>
-      </p>
-
-      <h1>一覧</h1>
+      <v-tabs fixed-tabs background-color="blue darken-3" dark>
+        <v-tab>
+          <router-link
+            to="/"
+            class="text-decoration-none white--text font-weight-bold"
+          >
+            注目の作品
+          </router-link>
+        </v-tab>
+        <v-tab>
+          <router-link
+            to="/complete"
+            class="text-decoration-none white--text font-weight-bold"
+          >
+            完結した作品
+          </router-link>
+        </v-tab>
+      </v-tabs>
       <router-view></router-view>
-      
-
     </v-main>
   </v-app>
 </template>
 
 <script>
-
-
 export default {
-  name: 'App',
+  name: "App",
 
-  components: {
-    
-  },
+  components: {},
 
   data: () => ({
     //

@@ -124,24 +124,6 @@ export default {
           console.error("Error writing document: ", error);
         });
     },
-    // this.sizeをpostNumberに
-      sizePostNumber: (word) => {
-      const db = firebase.firestore()
-      const titleList = db.collection('titles');
-      titleList.where("word", "==", word);
-        titleList.get()
-        .then((res) => {
-          res.forEach((doc) => {
-            console.log(doc.data());
-            console.log(1233333, doc.id);
-            titleList.doc(doc.id).update({
-              postNumber: this.size,
-            });
-          });
-        }).catch((error) =>{
-          console.error("Error writing document: ", error);
-        });
-    },
   }
 }
 </script>

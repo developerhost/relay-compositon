@@ -1,20 +1,7 @@
 <template>
   <div class="home">
     <h1>完成品</h1>
-
-    <v-text-field
-      label="Regular"
-      v-model="newTitleName"
-    ></v-text-field>
   <div class="postBtn">
-    <router-link
-      :to="'/about/' + newTitleName"
-    >
-
-    <v-btn @click="addTitle()">
-      タイトルを投稿
-    </v-btn>
-    </router-link>
 
   </div>
 
@@ -23,7 +10,7 @@
       <!-- key=accountsのIDが入る(dmNzy2QX92wE8fR4t5WG) -->
       <div v-for="(title, key) in titles" :key="key">
         <router-link
-        :to="'/about/' + title.word"
+        :to="{name: 'About', query: {word: title.word, id: title.name}}"
         >
         {{ key }}
         {{ title }}
@@ -53,7 +40,8 @@ export default {
   created(){
     this.db = firebase.firestore()
     this.titlesRef = this.db.collection('titles')
-    this.titlesRef.onSnapshot(querySnapshot => {
+    this.titlesPostNumber = this.titlesRef.where("postNumber", ">=", 10)
+    this.titlesPostNumber.onSnapshot(querySnapshot => {
       const obj = {}
       querySnapshot.forEach(doc => {
         obj[doc.id] = doc.data()
@@ -62,15 +50,7 @@ export default {
     })
   },
   methods: {
-    addTitle(){
-      if(this.newTitleName === ''){
-        alert("nothing");
-      }else{
-        this.titlesRef.add({
-          word: this.newTitleName
-        })
-      }
-    }
+    
   }
 }
 </script>
