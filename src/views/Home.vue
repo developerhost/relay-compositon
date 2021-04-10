@@ -145,11 +145,11 @@
                 <v-chip>
 
                 <Like
-                  :id="index"
+                  :id="key"
                   :firstSelect="false"
                   @heartSelect="addFavorite(title.word, clicked, index)"
                 />
-                <span>
+                <span class="subtitle-1">
                   {{ title.likeCounter }}
                 </span>
                 </v-chip>
@@ -221,12 +221,12 @@ export default {
         });
       }
     },
-    addFavorite: function(word, clickedq, index) {
-      console.log("addFavorite",word, clickedq,index);
+    addFavorite: function(word, clickedq, key) {
+      console.log("addFavorite",word, clickedq,key);
 
       const db = firebase.firestore();
       const titleList = db.collection("titles");
-      var clicked = this.titleList[index]["clicked"];
+      var clicked = this.titleList[key]["clicked"];
       titleList
         .where("word", "==", word)
         .get()
@@ -235,17 +235,17 @@ export default {
             console.log(doc.data());
             console.log(1233333, doc.id);
             if(clicked === 0){
-              this.titleList[index]["likeCounter"] += 1;
+              this.titleList[key]["likeCounter"] += 1;
               titleList.doc(doc.id).update({
                 likeCounter: firebase.firestore.FieldValue.increment(1),
               });
-              this.titleList[index]["clicked"] = 1;
+              this.titleList[key]["clicked"] = 1;
             } else {
-              this.titleList[index]["likeCounter"] -= 1;
+              this.titleList[key]["likeCounter"] -= 1;
                 titleList.doc(doc.id).update({
                 likeCounter: firebase.firestore.FieldValue.increment(-1),
               });
-              this.titleList[index]["clicked"] = 0;
+              this.titleList[key]["clicked"] = 0;
             }
           });
         })
