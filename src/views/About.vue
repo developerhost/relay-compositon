@@ -11,62 +11,6 @@
       </v-row>
     </v-container>
 
-    <!-- モーダルで投稿ボタンを作成 -->
-    <div v-if="this.size <= 9">
-    <div class="text-center">
-      <v-dialog v-model="dialog" width="500">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-          
-            color="blue lighten-2"
-            outlined
-            large
-            class="font-weight-bold my-5"
-            dark
-            v-bind="attrs"
-            v-on="on"
-          >
-            新しい文章を作る
-          </v-btn>
-        </template>
-
-        <v-card>
-          <v-card-title class="headline grey lighten-2">
-            文章と名前を入力
-          </v-card-title>
-
-          <v-text-field label="文章を入力" v-model="newPost"></v-text-field>
-          <v-text-field label="名前" v-model="newPostName"></v-text-field>
-
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <router-link
-              class="text-decoration-none"
-              :to="{
-                name: 'About',
-                query: { word: newTitleName, id: newAuthor },
-              }"
-            >
-              <v-btn
-                color="blue"
-                text
-                class="font-weight-bold text--darken-2"
-                @click="
-                  addPost();
-                  dialog = false;
-                "
-              >
-                文章を投稿
-              </v-btn>
-            </router-link>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
-    </div>
-
     <v-container>
       <v-row class="text-center my-2" justify="center">
         <h1>{{ this.$route.query.word }}</h1>
@@ -78,10 +22,92 @@
       <v-divider></v-divider>
     </v-container>
 
+    <v-container>
+      <v-row class="text-center my-2" justify="center">
+
     <h3 v-if="this.size <= 9">
       未完成だよ
     </h3>
     <h3 v-else>完成したよ</h3>
+      </v-row>
+      
+
+      <!-- 入力画面 -->
+
+
+    </v-container>
+
+      <div v-if="this.size <= 9">
+      <v-card class="mx-2">
+      <v-row class="text-center mx-2" justify="center">
+          <v-text-field label="文章を入力" v-model="newPost"></v-text-field>
+      </v-row>
+      <v-row class="text-center mx-2" justify="center">
+          <v-text-field label="名前" v-model="newPostName"></v-text-field>
+      </v-row>
+
+
+      <v-row class="text-center mx-2" justify="center">
+        <!-- モーダルで投稿ボタンを作成 -->
+          <div class="text-center">
+            <v-dialog v-model="dialog" width="500">
+              <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          
+          class="font-weight-bold mb-3"
+          color="blue lighten-2"
+          outlined
+          large
+          dark
+          v-bind="attrs"
+          v-on="on"
+          @click="
+            addPost();
+          "
+        >
+          文章を投稿
+        </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title class="headline grey lighten-2">
+            🎁投稿できました！🎁
+          </v-card-title>
+
+          <v-card-title>
+            {{ this.newPost }}
+          </v-card-title>
+          <v-card-title>
+            {{ this.newPostName }}
+          </v-card-title>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+              <v-btn
+                color="blue"
+                text
+                class="font-weight-bold text--darken-2"
+                @click="
+                  tweet();
+                  dialog = false;
+                "
+              >
+                ツイートする
+              </v-btn>
+          </v-card-actions>
+        </v-card>
+            </v-dialog>
+            </div>
+        </v-row>
+      </v-card>
+    </div>
+
+
+    
+
+
+
 
     <!-- カードを使って見た目を整える -->
     <v-container>
@@ -103,17 +129,18 @@
             <v-card-subtitle class="text-right">
               -{{ post.name }}
             </v-card-subtitle>
+            <v-divider></v-divider>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
     
-    <div class="text-center">
+    <div class="text-center" justify="center">
       <v-btn 
         color="blue lighten-2"
         outlined
         large
-        class="font-weight-bold my-5"
+        class="font-weight-bold my-5 text-center"
         dark
         @click="tweet()"
         >ツイートする
@@ -177,8 +204,6 @@ export default {
             console.log("increment");
             
           });
-        this.newPost = "";
-        this.newPostName = "";
         this.isPush = true;
         console.log("post");
         this.size += 1;
@@ -207,10 +232,10 @@ export default {
     tweet() {
       var shareURL =
         "https://twitter.com/intent/tweet?text=" +
-        "新しい小説を作ろう" +
+        "新しい小説を作ろう" + this.$route.query.word + "に" + this.newPost + "を投稿しました" +
         "%20%23TwiStory" +
         "&url=" +
-        "https://relay-composition.web.app/";
+        `https://relay-composition.web.app/about?word=${this.$route.query.word}&id=${this.$route.query.id}`;
       location.href = shareURL;
     },
   },
