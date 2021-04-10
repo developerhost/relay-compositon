@@ -226,32 +226,34 @@ export default {
 
       const db = firebase.firestore();
       const titleList = db.collection("titles");
+      const title = titleList.doc(word);
+
       var clicked = this.titleList[key]["clicked"];
-      titleList
-        .where("word", "==", word)
-        .get()
-        .then((res) => {
-          res.forEach((doc) => {
-            console.log(doc.data());
-            console.log(1233333, doc.id);
+      // titleList
+      //   .where("word", "==", word)
+      //   .get()
+      //   .then((res) => {
+      //     res.forEach((doc) => {
+      //       console.log(doc.data());
+      //       console.log(1233333, doc.id);
             if(clicked === 0){
               this.titleList[key]["likeCounter"] += 1;
-              titleList.doc(doc.id).update({
+              title.update({
                 likeCounter: firebase.firestore.FieldValue.increment(1),
               });
               this.titleList[key]["clicked"] = 1;
             } else {
               this.titleList[key]["likeCounter"] -= 1;
-                titleList.doc(doc.id).update({
+                title.update({
                 likeCounter: firebase.firestore.FieldValue.increment(-1),
               });
               this.titleList[key]["clicked"] = 0;
             }
-          });
-        })
-        .catch((error) => {
-          console.error("Error writing document: ", error);
-        });
+          // });
+        // })
+        // .catch((error) => {
+        //   console.error("Error writing document: ", error);
+        // });
     }
   },
 };
