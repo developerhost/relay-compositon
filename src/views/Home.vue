@@ -114,11 +114,11 @@
     <v-container>
       <v-row dense>
         <v-col v-for="(title, key) in titles" :key="key" cols="12">
+            <v-card outlined elevation="9">
           <router-link
             :to="{ name: 'About', query: { word: title.word, id: title.name } }"
             class="text-decoration-none"
           >
-            <v-card outlined elevation="9">
               <v-card-title class="headline">
                 <span>
                   {{ title.word }}
@@ -129,24 +129,52 @@
                   あと{{ 10 - title.postNumber }}人！</span
                 >
               </v-card-title>
-
-              <v-card-subtitle v-text="title.name"></v-card-subtitle>
-            </v-card>
           </router-link>
+
+              <v-card-subtitle>
+                <v-chip-group
+                  column
+                >
+                <v-chip>
+
+                {{ title.name }}
+                </v-chip>
+
+                <v-spacer></v-spacer>
+
+                <v-chip>
+
+                <Like
+                  :id="index"
+                  :firstSelect="false"
+                  @heartSelect="addFavorite(title.word, clicked, index)"
+                />
+                <span>
+                  {{ title.likeCounter }}
+                </span>
+                </v-chip>
+                </v-chip-group>
+              </v-card-subtitle>
+            </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <!-- <Test/> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import firebase from "firebase";
+import Like from "../components/Like.vue";
+// import Test from "../components/Test.vue";
 
 export default {
   name: "Home",
   props: ["size"],
-  components: {},
+  components: {
+    Like
+  },
   data: () => ({
     db: null,
     titlesRef: null,
@@ -154,6 +182,7 @@ export default {
     titles: {},
     isComplete: false,
     postNumber: 0,
+    likeCounter: 0,
     newAuthor: "",
   }),
   created() {
@@ -188,9 +217,42 @@ export default {
           postNumber: 0,
           name: this.newAuthor,
           createdAt: new Date(),
+          likeCounter: 0
         });
       }
     },
+    addFavorite: function(word, clickedq, index) {
+      console.log("addFavorite",word, clickedq,index);
+
+      const db = firebase.firestore();
+      const titleList = db.collection("titles");
+      var clicked = this.titleList[index]["clicked"];
+      titleList
+        .where("word", "==", word)
+        .get()
+        .then((res) => {
+          res.forEach((doc) => {
+            console.log(doc.data());
+            console.log(1233333, doc.id);
+            if(clicked === 0){
+              this.titleList[index]["likeCounter"] += 1;
+              titleList.doc(doc.id).update({
+                likeCounter: firebase.firestore.FieldValue.increment(1),
+              });
+              this.titleList[index]["clicked"] = 1;
+            } else {
+              this.titleList[index]["likeCounter"] -= 1;
+                titleList.doc(doc.id).update({
+                likeCounter: firebase.firestore.FieldValue.increment(-1),
+              });
+              this.titleList[index]["clicked"] = 0;
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+    }
   },
 };
 </script>
