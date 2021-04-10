@@ -147,7 +147,7 @@
                 <Like
                   :id="key"
                   :firstSelect="false"
-                  @heartSelect="addFavorite(title.word, clicked, index)"
+                  @heartSelect="addFavorite(title.word, clicked, key)"
                 />
                 <span class="subtitle-1">
                   {{ title.likeCounter }}
