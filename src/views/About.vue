@@ -50,7 +50,7 @@
       <v-row class="text-center mx-2" justify="center">
         <!-- モーダルで投稿ボタンを作成 -->
           <div class="text-center">
-            <v-dialog v-model="dialog" width="500">
+            <v-dialog v-model="dialog" transition="dialog-bottom-transition" width="500">
               <template v-slot:activator="{ on, attrs }">
         <v-btn
           
@@ -68,26 +68,37 @@
           文章を投稿
         </v-btn>
         </template>
+        
+        <v-card
+          class="mx-auto my-auto"
+          max-height="500px"
+          >
+          <v-row class="text-center" justify="center">
 
-        <v-card>
-          <v-card-title class="headline grey lighten-2">
-            🎁投稿できました！🎁
+          <v-card-title class="headline text-center my-2">
+            🎁投稿できました🎁
           </v-card-title>
+          </v-row>
 
-          <v-card-title>
-            {{ this.newPost }}
-          </v-card-title>
-          <v-card-title>
-            {{ this.newPostName }}
-          </v-card-title>
+          <v-card-text>
+            文章:{{ this.newPost }}
+          </v-card-text>
+          <v-card-text>
+            名前:{{ this.newPostName }}
+          </v-card-text>
 
           <v-divider></v-divider>
+
+          <v-row justify="space-around">
+
+        <v-col cols="auto">
 
           <v-card-actions>
               <v-btn
                 color="blue"
+                large
                 text
-                class="font-weight-bold text--darken-2"
+                class="font-weight-bold text--darken-2 subtitle-1"
                 @click="
                   tweet();
                   dialog = false;
@@ -96,6 +107,27 @@
                 ツイートする
               </v-btn>
           </v-card-actions>
+        </v-col>
+
+          <!-- <v-spacer></v-spacer> -->
+          <v-col cols="auto">
+
+          <v-card-actions>
+              <v-btn
+                color="blue"
+                large
+                text
+                class="font-weight-bold text--darken-2 subtitle-1"
+                @click="
+                  dialog = false;
+                "
+              >
+                閉じる
+              </v-btn>
+          </v-card-actions>
+          </v-col>
+          </v-row>
+          
         </v-card>
             </v-dialog>
             </div>
