@@ -230,13 +230,21 @@ export default {
         });
     },
     tweet() {
+      // const href = location.href; //1.URLを取得し、エンコード
+      // const snsUrl = encodeURIComponent(href);
+      const baseUrl = 'https://relay-composition.web.app/about?';
+      // const queryParam = "word="+this.$route.query.word+"&id="+this.$route.query.id;
+      const queryParam1 = `word=${this.$route.query.word}&id=${this.$route.query.id}`
+      const url = `${baseUrl}${queryParam1}`;
       var shareURL =
         "https://twitter.com/intent/tweet?text=" +
         "新しい小説を作ろう" + this.$route.query.word + "に" + this.newPost + "を投稿しました" +
         "%20%23TwiStory" +
-        "&url=" +
-        `https://relay-composition.web.app/about?word=${this.$route.query.word}&id=${this.$route.query.id}`;
-      location.href = shareURL;
+        "&url=" + url;
+        // `${baseUrl}${queryParam}`;
+      // location.href = shareURL;
+      console.log(shareURL);
+      
     },
   },
 };
