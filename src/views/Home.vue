@@ -184,6 +184,7 @@ export default {
     postNumber: 0,
     likeCounter: 0,
     newAuthor: "",
+    isClicked: false
   }),
   created() {
     this.db = firebase.firestore();
@@ -222,13 +223,22 @@ export default {
       }
     },
     addFavorite: function(word, clickedq, key) {
-      console.log("addFavorite",word, clickedq,key);
+      console.log("addFavorite",word, clickedq, key);
 
       const db = firebase.firestore();
       const titleList = db.collection("titles");
-      const title = titleList.doc(word);
-
-      var clicked = this.titleList[key]["clicked"];
+      const title = titleList.doc(key);
+      this.isClicked = !this.isClicked;
+      if(this.isClicked == true){
+        title.update({
+                  likeCounter: firebase.firestore.FieldValue.increment(1),
+                });
+      } else {
+                title.update({
+                  likeCounter: firebase.firestore.FieldValue.increment(-1),
+                });
+      }
+      // var clicked = this.titleList[key]["clicked"];
       // titleList
       //   .where("word", "==", word)
       //   .get()
@@ -236,19 +246,17 @@ export default {
       //     res.forEach((doc) => {
       //       console.log(doc.data());
       //       console.log(1233333, doc.id);
-            if(clicked === 0){
-              this.titleList[key]["likeCounter"] += 1;
-              title.update({
-                likeCounter: firebase.firestore.FieldValue.increment(1),
-              });
-              this.titleList[key]["clicked"] = 1;
-            } else {
-              this.titleList[key]["likeCounter"] -= 1;
-                title.update({
-                likeCounter: firebase.firestore.FieldValue.increment(-1),
-              });
-              this.titleList[key]["clicked"] = 0;
-            }
+            // if(clicked === 0){
+            //   this.titleList[key]["likeCounter"] += 1;
+              
+            //   this.titleList[key]["clicked"] = 1;
+            // } else {
+            //   this.titleList[key]["likeCounter"] -= 1;
+            //     title.update({
+            //     likeCounter: firebase.firestore.FieldValue.increment(-1),
+            //   });
+            //   this.titleList[key]["clicked"] = 0;
+            // }
           // });
         // })
         // .catch((error) => {

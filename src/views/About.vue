@@ -268,17 +268,20 @@ export default {
       // const snsUrl = encodeURIComponent(href);
       const baseUrl = 'https://relay-composition.web.app/about?';
       // const queryParam = "word="+this.$route.query.word+"&id="+this.$route.query.id;
-      const queryParam1 = `word=${this.$route.query.word}&id=${this.$route.query.id}`
-      const url = `${baseUrl}${queryParam1}`;
+      const wordURL = encodeURI(this.$route.query.word);
+      const idURL = encodeURI(this.$route.query.id)
+      const queryParam1 = "word="+wordURL+"&id="+idURL;
+      const url = baseUrl+queryParam1;
+      const url2 = url;
+      // const encoded = encodeURI(this.$route.query.word);
       var shareURL =
         "https://twitter.com/intent/tweet?text=" +
         "新しい小説を作ろう" + this.$route.query.word + "に" + this.newPost + "を投稿しました" +
-        "%20%23TwiStory" +
-        "&url=" + url;
+        "&url=" + url2;
         // `${baseUrl}${queryParam}`;
       // location.href = shareURL;
+      console.log("encode",url2);
       console.log(shareURL);
-      
     },
   },
 };
