@@ -118,9 +118,7 @@
                 large
                 text
                 class="font-weight-bold text--darken-2 subtitle-1"
-                @click="
-                  dialog = false;
-                "
+                @click="dialog = false; clearText();"
               >
                 閉じる
               </v-btn>
@@ -240,6 +238,10 @@ export default {
         console.log("post");
         this.size += 1;
       }
+    },
+    clearText() {
+      this.newPost = '',
+      this.newPostName = ''
     },
     // postをincrement
     incrementPostNumber: (word) => {
