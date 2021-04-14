@@ -264,24 +264,26 @@ export default {
         });
     },
     tweet() {
-      // const href = location.href; //1.URLを取得し、エンコード
-      // const snsUrl = encodeURIComponent(href);
-      const baseUrl = 'https://relay-composition.web.app/about?';
-      // const queryParam = "word="+this.$route.query.word+"&id="+this.$route.query.id;
+      const baseUrl = 'https://relay-composition.web.app/about';
       const wordURL = encodeURI(this.$route.query.word);
-      const idURL = encodeURI(this.$route.query.id)
-      const queryParam1 = "word="+wordURL+"&id="+idURL;
+      const idURL = encodeURI("&id=" + this.$route.query.id);
+      const queryParam1 = "?word="+wordURL+idURL;
       const url = baseUrl+queryParam1;
-      const url2 = url;
-      // const encoded = encodeURI(this.$route.query.word);
       var shareURL =
         "https://twitter.com/intent/tweet?text=" +
         "新しい小説を作ろう" + this.$route.query.word + "に" + this.newPost + "を投稿しました" +
-        "&url=" + url2;
+        "&url=" + url;
         // `${baseUrl}${queryParam}`;
       // location.href = shareURL;
-      console.log("encode",url2);
+      console.log("encode",url);
       console.log(shareURL);
+      console.log("URL",location.href);
+      console.log(location.pathname);
+      console.log(location.search);
+      console.log(this.$route.query);
+      
+      
+      
     },
   },
 };
