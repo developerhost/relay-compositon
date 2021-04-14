@@ -8,7 +8,6 @@
         <v-icon large color="blue">mdi-account-edit-outline</v-icon>
         <h1>TwiStory</h1>
       </v-row>
-
       <v-row>
         <v-layout justify-center>
           <v-avatar size="100%">
@@ -20,7 +19,6 @@
           </v-avatar>
         </v-layout>
       </v-row>
-
       <v-row outlined class="v-row--outlined text-center" justify="center">
         <v-col>
           <v-text-field
@@ -31,7 +29,6 @@
           ></v-text-field>
         </v-col>
       </v-row>
-
       <v-row
         class="text-center grey--text text--lighten-2 my-2"
         justify="center"
@@ -48,7 +45,6 @@
           ②作品は１０投稿で完成します。<br />どんどんシェアして完成させましょう！
         </h4>
       </v-row>
-
       <!-- モーダルで小説投稿ボタン -->
       <div class="text-center">
         <v-dialog v-model="dialog" width="500">
@@ -65,20 +61,16 @@
               新しい小説を作る
             </v-btn>
           </template>
-
           <v-card>
             <v-card-title class="headline grey lighten-2">
               タイトルと名前を入力
             </v-card-title>
-
             <v-text-field
               label="タイトル"
               v-model="newTitleName"
             ></v-text-field>
             <v-text-field label="名前" v-model="newAuthor"></v-text-field>
-
             <v-divider></v-divider>
-
             <v-card-actions>
               <v-spacer></v-spacer>
               <router-link
@@ -101,7 +93,6 @@
           </v-card>
         </v-dialog>
       </div>
-
       <v-row
         class="text-center my-5 blue--text grey lighten-2"
         justify="center"
@@ -109,14 +100,16 @@
         <h1>注目の作品</h1>
       </v-row>
     </v-container>
-
     <!-- カードで見た目を整える -->
     <v-container>
       <v-row dense>
         <v-col v-for="(title, key) in titles" :key="key" cols="12">
             <v-card outlined elevation="9">
           <router-link
-            :to="{ name: 'About', query: { word: title.word, id: title.name } }"
+            :to="{
+              name: 'About',
+              params: { word: title.word }
+            }"
             class="text-decoration-none"
           >
               <v-card-title class="headline">
@@ -124,26 +117,20 @@
                   {{ title.word }}
                 </span>
                 <v-spacer></v-spacer>
-
                 <span class="subtitle-1">
                   あと{{ 10 - title.postNumber }}人！</span
                 >
               </v-card-title>
           </router-link>
-
               <v-card-subtitle>
                 <v-chip-group
                   column
                 >
                 <v-chip>
-
                 {{ title.name }}
                 </v-chip>
-
                 <v-spacer></v-spacer>
-
                 <v-chip>
-
                 <Like
                   :id="key"
                   :firstSelect="false"
@@ -162,13 +149,11 @@
     <!-- <Test/> -->
   </div>
 </template>
-
 <script>
 // @ is an alias to /src
 import firebase from "firebase";
 import Like from "../components/Like.vue";
 // import Test from "../components/Test.vue";
-
 export default {
   name: "Home",
   props: ["size"],
@@ -189,7 +174,6 @@ export default {
   created() {
     this.db = firebase.firestore();
     this.titlesRef = this.db.collection("titles");
-
     this.titlesRef
       .where("postNumber", "<", 10)
       .orderBy("postNumber", "desc")
@@ -200,7 +184,6 @@ export default {
           obj[doc.id] = doc.data();
         });
         this.titles = obj;
-
         //titleとひもづくpostが10投稿でisCompleteをtrueにしたい
         if (this.postNumber >= 10) {
           this.titles.isComplete = true;
@@ -224,7 +207,6 @@ export default {
     },
     addFavorite: function(word, clickedq, key) {
       console.log("addFavorite",word, clickedq, key);
-
       const db = firebase.firestore();
       const titleList = db.collection("titles");
       const title = titleList.doc(key);
@@ -248,7 +230,6 @@ export default {
       //       console.log(1233333, doc.id);
             // if(clicked === 0){
             //   this.titleList[key]["likeCounter"] += 1;
-              
             //   this.titleList[key]["clicked"] = 1;
             // } else {
             //   this.titleList[key]["likeCounter"] -= 1;
@@ -266,7 +247,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .balloon {
   position: relative;
@@ -280,7 +260,6 @@ export default {
   background: #e0edff;
   border-radius: 15px;
 }
-
 .balloon:before {
   content: "";
   position: absolute;
@@ -290,7 +269,6 @@ export default {
   border: 15px solid transparent;
   border-top: 15px solid #e0edff;
 }
-
 .balloon p {
   margin: 0;
   padding: 0;
