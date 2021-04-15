@@ -110,10 +110,12 @@
       </v-card>
     </div>
     <!-- カードを使って見た目を整える -->
-    <v-container>
+
+    <div style="background-color:#EEEEEE">
+    <v-container color="grey">
       <v-row dense>
         <v-col v-for="(post, key) in posts" :key="key" cols="12">
-          <v-card class="d-inline">
+          <v-card class="d-inline" color="grey">
             <v-card-title class="headline">
               <span class="subtitle-1">
                 {{ post.sentence }}
@@ -132,6 +134,7 @@
         </v-col>
       </v-row>
     </v-container>
+    </div>
     <div class="text-center" justify="center">
       <v-btn 
         color="blue lighten-2"
@@ -240,20 +243,16 @@ export default {
         });
     },
     tweet() {
-      const baseUrl = 'https://relay-composition.web.app/about';
-      const wordURL = encodeURI("?word="+this.$route.params.word);
-      const queryParam1 = wordURL;
-      const query = new URLSearchParams(queryParam1).toString();
-      const url = baseUrl+query;
-      const encode = encodeURI(location.href);
+      const baseUrl = 'https://relay-composition.web.app/about/';
+      const wordURL = encodeURI(this.$route.params.word);
+      const url = baseUrl+wordURL;
+      const encode = encodeURI(url);
       var shareURL =
         "https://twitter.com/intent/tweet?text=" +
-        "新しい小説を作ろう" +
+        `${this.$route.params.word}に続きを投稿しよう！` +
         "%20%23TwiStory" +
         "&url=" + encode;
-        // `${baseUrl}${queryParam}`;
-      // location.href = shareURL;
-      console.log("paramus",query);
+      location.href = shareURL;
       console.log("encodeurl",encode);
       console.log("encode",url);
       console.log(shareURL);

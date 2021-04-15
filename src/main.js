@@ -17,7 +17,7 @@ dotenv.config()
   var firebaseConfig = {
     apiKey: process.env.VUE_APP_API_KEY,
     authDomain: process.env.VUE_APP_AUTHDOMAIN,
-    projectId: process.env.VUE_APP_PROJECTID,
+    projectId: "relay-composition",
     storageBucket: "relay-composition.appspot.com",
     messagingSenderId: process.env.VUE_APP_MESSAGINGSNDERID,
     appId: process.env.VUE_APP_APPID,
